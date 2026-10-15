@@ -14,12 +14,13 @@ function addMoves(){
     squares.forEach((square, i) => {
         square.addEventListener('click', 
             () => {
-
-                var turn = (moves.length === 0 || moves.at(-1)[0] === 'O') ? 'X' : 'O';
-                square.setAttribute('class', `square ${turn}`);
-                square.innerHTML = turn;
-                moves.push([turn, i]);
-                displayWinner();
+                if (square.innerHTML ===  ""){
+                    var turn = (moves.length === 0 || moves.at(-1)[0] === 'O') ? 'X' : 'O';
+                    square.setAttribute('class', `square ${turn}`);
+                    square.innerHTML = turn;
+                    moves.push([turn, i]);
+                    displayWinner();
+                }
             }
         )
     });
