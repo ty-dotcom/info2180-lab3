@@ -1,5 +1,5 @@
 
-const moves = [];
+let moves = [];
 
 function layoutBoard(){
     squares = document.querySelectorAll('#board > div');
@@ -19,7 +19,7 @@ function addMoves(){
                 square.setAttribute('class', `square ${turn}`);
                 square.innerHTML = turn;
                 moves.push([turn, i]);
-                DisplayWinner();
+                displayWinner();
             }
         )
     });
@@ -44,13 +44,13 @@ function hoverChanges(){
 }
 
 
-function DisplayWinner(){
+function displayWinner(){
     stats = document.querySelector('#status');
     result = checkWinner();
     if (result.win){
         stats.setAttribute('class', 'you-won');
-        stats.innerHTML = `Congratulations! ${result.winner} is the Winner!`
-    }
+        stats.innerHTML = `Congratulations! ${result.winner} is the Winner!`;
+    };
 }
 
 function checkWinner(){
@@ -64,7 +64,7 @@ function checkWinner(){
         board.slice(0, 3),
         board.slice(3, 6),
         board.slice(6, 9),
-    ]
+    ];
 
     for(i = 0; i < 3; i++){
         if (rows[i].every(val => val === rows[i][0] && rows[i][0] !== "")){
@@ -86,11 +86,28 @@ function checkWinner(){
 
     return {win: false, winner: ''};
 
-    
+}
+
+function resetGame(){
+    resetBtn = document.querySelector('.btn');
+    resetBtn.addEventListener('click', () => {
+        stats = document.querySelector('#status');
+        stats.classList.remove('you-won');
+        stats.innerHTML = "Move your mouse over a square and click to play an X or an O.";
+
+        moves.length = 0;
+        squares = document.querySelectorAll('#board > div');
+        squares.forEach((square) => {
+            square.setAttribute('class', 'square');
+            square.innerHTML = '';       
+        });
+    })
+
 }
 
 window.onload = function(){
     layoutBoard();
     addMoves();
     hoverChanges();
+    resetGame();
 }
