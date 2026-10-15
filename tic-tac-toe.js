@@ -1,5 +1,6 @@
 
 let moves = [];
+let result = {};
 
 function layoutBoard(){
     squares = document.querySelectorAll('#board > div');
@@ -14,7 +15,7 @@ function addMoves(){
     squares.forEach((square, i) => {
         square.addEventListener('click', 
             () => {
-                if (square.innerHTML ===  ""){
+                if (square.innerHTML ===  "" && !result.win){
                     var turn = (moves.length === 0 || moves.at(-1)[0] === 'O') ? 'X' : 'O';
                     square.setAttribute('class', `square ${turn}`);
                     square.innerHTML = turn;
@@ -48,10 +49,15 @@ function hoverChanges(){
 function displayWinner(){
     stats = document.querySelector('#status');
     result = checkWinner();
+    
     if (result.win){
         stats.setAttribute('class', 'you-won');
         stats.innerHTML = `Congratulations! ${result.winner} is the Winner!`;
     };
+
+    if (result.winner === 'draw'){
+        stats.innerHTML = `Draw!`;
+    }
 }
 
 function checkWinner(){
@@ -85,6 +91,10 @@ function checkWinner(){
         return {win: true, winner: rows[0][2]};
     }
 
+    if (rows.flat().every(el => el !== "")){
+        return {win: false, winner: 'draw'}
+    }
+
     return {win: false, winner: ''};
 
 }
@@ -102,6 +112,8 @@ function resetGame(){
             square.setAttribute('class', 'square');
             square.innerHTML = '';       
         });
+
+        result = {};
     })
 
 }
